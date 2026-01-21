@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a548db289c644f0d9c929dad1aea083b, type: 3}
+  m_Name: ColorObjectViewSettings
+  m_EditorClassIdentifier: 
+  _colorMaterialPair:
+  - Color: 0
+    Material: {fileID: 2100000, guid: f3ba0f90309f84bddbe5b3a27e240539, type: 2}
+  - Color: 1
+    Material: {fileID: 2100000, guid: cae9a4c401e9a425fb7498be1ebf4ce5, type: 2}
+  - Color: 3
+    Material: {fileID: 2100000, guid: c541e72f3516d442abe13a5b69a249b7, type: 2}
+  - Color: 4
+    Material: {fileID: 2100000, guid: ec9b30d54c17949a786d654825831f8f, type: 2}
