@@ -29,7 +29,6 @@ namespace Game.Path
             foreach (var group in _groups)
             {
                 var position = path.GetPointAtDistance(group.Distance);
-
                 group.Move(_speed, position, Quaternion.identity);
             }
         }
