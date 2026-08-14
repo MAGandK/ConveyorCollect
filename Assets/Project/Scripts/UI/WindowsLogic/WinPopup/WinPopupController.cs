@@ -1,5 +1,4 @@
 using System;
-using UI.WindowsLogic.GameWindow;
 
 namespace UI.WindowsLogic.WinPopup
 {
@@ -16,14 +15,12 @@ namespace UI.WindowsLogic.WinPopup
 
         public override void Initialize()
         {
-            base.Initialize();
-
             _winView.SubscribeButton(OnContinueButtonClick);
         }
 
         private void OnContinueButtonClick()
         {
-            _uiController.ShowWindow<GameWindowController>();
+            _uiController.CloseLastOpenPopup();
             Won?.Invoke();
         }
     }

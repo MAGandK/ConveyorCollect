@@ -12,7 +12,7 @@ namespace Game.ColorStack
 {
     public class ColorObjectStack : MonoBehaviour
     {
-        public event Action FilledStack;
+        public event Action<ColorObjectStack> FilledStack;
 
         [SerializeField] private int _capacity;
         [SerializeField] private Transform _startObjectPosition;
@@ -28,11 +28,18 @@ namespace Game.ColorStack
         private Vector3[] _objectPositions;
         private readonly Stack<ColorObject> _colorObjects = new();
         private Material _initMaterialStackPlatform;
+        private bool _wasFilledThisSession;
 
         public List<ColorObject> StartObjects => _startObjects;
         public float DistanceBetween => _distanceBetween;
         public bool CanInteract => Time.time >= _canInteractTime;
         public bool IsFull => _colorObjects.Count >= _capacity;
+        public bool WasFilledThisSession => _wasFilledThisSession;
+
+        public void ResetWinProgress()
+        {
+            _wasFilledThisSession = false;
+        }
 
         private void Awake()
         {
@@ -164,7 +171,7 @@ namespace Game.ColorStack
             return pair.Material;
         }
 
-        public bool CheckWinState()
+        public bool IsWinningStack()
         {
             if (!IsFull || _colorObjects.Count == 0)
             {
@@ -181,8 +188,19 @@ namespace Game.ColorStack
                 }
             }
 
-            FilledStack?.Invoke();
-            Debug.Log($"собрали цвет {color}");
+            return true;
+        }
+
+        public bool CheckWinState()
+        {
+            if (!IsWinningStack())
+            {
+                return false;
+            }
+
+            _wasFilledThisSession = true;
+            FilledStack?.Invoke(this);
+            Debug.Log($"собрали цвет {_colorObjects.Peek().Color}");
 
             return true;
         }

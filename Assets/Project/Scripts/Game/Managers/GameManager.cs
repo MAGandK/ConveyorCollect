@@ -1,4 +1,5 @@
 using System;
+using Level;
 using UI.Other;
 using UI.UIControllers;
 using UI.WindowsLogic.FailPopup;
@@ -14,6 +15,7 @@ namespace Game.Managers
     {
         [SerializeField] private TimerController _timerController;
         [SerializeField] private UiInitializer _uiInitializer;
+        [SerializeField] private LevelManager _levelManager;
         public event Action GameStarted;
         public event Action GameFinished;
         public event Action GameRestarted;
@@ -25,6 +27,7 @@ namespace Game.Managers
         private GameWindowController _gameWindow;
         private PausePopupController _pausePopup;
         private FailPopupController _failPopup;
+        private bool _isLevelWon;
 
         private void Awake()
         {
@@ -65,9 +68,34 @@ namespace Game.Managers
 
         }
 
+        public void OnLevelWon()
+        {
+            if (_isLevelWon)
+            {
+                return;
+            }
+
+            _isLevelWon = true;
+            _timerController.PauseTimer();
+            FinishGame();
+            Time.timeScale = 0f;
+        }
+
         private void WinPopupOnWon()
         {
-            FinishGame();
+            _isLevelWon = false;
+            Time.timeScale = 1f;
+
+            if (_levelManager == null)
+            {
+                _levelManager = FindFirstObjectByType<LevelManager>();
+            }
+
+            _levelManager?.LoadNextLevel();
+            _timerController.ResetTimer();
+            _timerController.StartTimer();
+            _uiController.ShowWindow<GameWindowController>();
+            GameRestarted?.Invoke();
         }
 
         private void StartGame()
@@ -84,6 +112,7 @@ namespace Game.Managers
 
         private void RestartGame()
         {
+            _isLevelWon = false;
             _timerController.ResetTimer();
             _timerController.StartTimer();
             _uiController.ShowWindow<GameWindowController>();

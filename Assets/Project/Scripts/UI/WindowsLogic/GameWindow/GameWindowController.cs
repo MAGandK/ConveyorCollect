@@ -13,16 +13,12 @@ namespace UI.WindowsLogic.GameWindow
 
         public override void Initialize()
         {
-            base.Initialize();
-
             _gameWindowView.SubscribeButton(OnPauseButtonClick, OnRestartButtonClick);
-
         }
 
         private void OnPauseButtonClick()
         {
             _uiController.ShowWindow<PausePopupController>();
-
         }
 
         private void OnRestartButtonClick()

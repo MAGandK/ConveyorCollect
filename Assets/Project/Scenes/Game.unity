@@ -531,6 +531,10 @@ PrefabInstance:
       propertyPath: _failPopupView
       value: 
       objectReference: {fileID: 770495047819179452}
+    - target: {fileID: 6983764917681035184, guid: fa0dd853b5a174c57bd30ef4df29e219, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7643240238963178181, guid: fa0dd853b5a174c57bd30ef4df29e219, type: 3}
       propertyPath: m_Name
       value: UI

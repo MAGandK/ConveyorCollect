@@ -30,10 +30,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2712243485490337247}
   - {fileID: 5209554171893920701}
   - {fileID: 6813899554361891797}
   - {fileID: 7374450786511093447}
+  - {fileID: 2712243485490337247}
   - {fileID: 6319506066863141744}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -597,7 +597,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9135068573006768905, guid: 176c83da9b57a4140b6155dc37c709ce, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
