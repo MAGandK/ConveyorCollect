@@ -494,7 +494,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Level.LevelManager
   _levelPrefabs:
-  - {fileID: 6369844822927669131, guid: 53e489ef8279349029a44c7c87490d66, type: 3}
+  - {fileID: 6567112698698625461, guid: 2063ddc2ec19d4d42a2d66b674358381, type: 3}
   _spawnPoint: {fileID: 1285658055}
 --- !u!4 &2056093514
 Transform:
