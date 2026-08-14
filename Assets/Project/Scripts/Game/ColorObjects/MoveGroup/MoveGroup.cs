@@ -4,16 +4,26 @@ using UnityEngine;
 
 namespace Game.ColorObjects.MoveGroup
 {
-    public class MoveGroup: MonoBehaviour
+    public class MoveGroup : MonoBehaviour
     {
         private Stack<ColorObject> _colorObjects;
+
         private PathMover _pathMover;
+
         private bool _isSetup;
+
         public bool IsSetup => _isSetup;
 
         public float Distance { get; set; }
 
         public Stack<ColorObject> ColorObjects => _colorObjects;
+
+        public void Move(float speed, Vector3 position, Quaternion rotation)
+        {
+            Distance += speed * Time.deltaTime;
+            
+               transform.position = position;
+        }
 
         public void Setup(IEnumerable<ColorObject> colorObjects, PathMover pathMover)
         {
@@ -22,17 +32,11 @@ namespace Game.ColorObjects.MoveGroup
 
             foreach (var colorObject in _colorObjects)
             {
-                colorObject.transform.SetParent(transform);
+                if (colorObject != null)
+                    colorObject.transform.SetParent(transform);
             }
 
             _isSetup = true;
-        }
-
-        public void Move(float speed, Vector3 position, Quaternion rotation)
-        {
-            Distance += speed * Time.deltaTime;
-
-            transform.position = position;
         }
     }
 }

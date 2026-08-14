@@ -494,7 +494,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Level.LevelManager
   _levelPrefabs:
-  - {fileID: 6369844822927669131, guid: 53e489ef8279349029a44c7c87490d66, type: 3}
+  - {fileID: 6567112698698625461, guid: 2063ddc2ec19d4d42a2d66b674358381, type: 3}
   _spawnPoint: {fileID: 1285658055}
 --- !u!4 &2056093514
 Transform:
@@ -523,14 +523,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4165560214988153890, guid: fa0dd853b5a174c57bd30ef4df29e219, type: 3}
-      propertyPath: _popupView
-      value: 
-      objectReference: {fileID: 770495047819179451}
-    - target: {fileID: 4165560214988153890, guid: fa0dd853b5a174c57bd30ef4df29e219, type: 3}
-      propertyPath: _failPopupView
-      value: 
-      objectReference: {fileID: 770495047819179452}
     - target: {fileID: 7643240238963178181, guid: fa0dd853b5a174c57bd30ef4df29e219, type: 3}
       propertyPath: m_Name
       value: UI
@@ -604,28 +596,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19e6a76021c14e879800c472c3242710, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &770495047819179451 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6896168317105367099, guid: fa0dd853b5a174c57bd30ef4df29e219, type: 3}
-  m_PrefabInstance: {fileID: 770495047819179448}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e96d24c2cad4c6ca0ffb5086df34d20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &770495047819179452 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8748726485522100453, guid: fa0dd853b5a174c57bd30ef4df29e219, type: 3}
-  m_PrefabInstance: {fileID: 770495047819179448}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 275ab093e71043dca7e30a222decfcec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!20 &936208972372220651

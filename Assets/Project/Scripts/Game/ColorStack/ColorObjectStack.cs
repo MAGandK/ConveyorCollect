@@ -166,7 +166,7 @@ namespace Game.ColorStack
 
         public bool CheckWinState()
         {
-            if (!IsFull)
+            if (!IsFull || _colorObjects.Count == 0)
             {
                 return false;
             }
