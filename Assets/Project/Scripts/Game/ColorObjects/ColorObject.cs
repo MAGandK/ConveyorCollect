@@ -17,23 +17,44 @@ namespace Game.ColorObjects
         public float JumpDuration => _jumpDuration;
 
         private bool _isJumping;
+        private Tween _jumpTween;
         public bool IsJumping => _isJumping;
         public ColorType Color => _color;
 
         public void JumpTo(Vector3 targetPosition, float delay,Action callBack = null)
         {
+            StopJump();
             _isJumping = true;
             var originalRotation = transform.rotation;
 
-            transform.DOJump(targetPosition, _jumpPower, 1, _jumpDuration)
+            _jumpTween = transform.DOJump(targetPosition, _jumpPower, 1, _jumpDuration)
                 .SetDelay(delay)
                 .SetEase(Ease.OutQuad)
+                .SetLink(gameObject)
+                .OnKill(() => _isJumping = false)
                 .OnComplete(() =>
                 {
                     transform.rotation = originalRotation;
                     _isJumping = false;
+                    _jumpTween = null;
                     callBack?.Invoke();
                 });
+        }
+
+        public void StopJump()
+        {
+            if (_jumpTween != null && _jumpTween.IsActive())
+            {
+                _jumpTween.Kill();
+            }
+
+            _jumpTween = null;
+            _isJumping = false;
+        }
+
+        private void OnDestroy()
+        {
+            StopJump();
         }
 
         public void EditorSetColor(ColorType colorType, Material material)

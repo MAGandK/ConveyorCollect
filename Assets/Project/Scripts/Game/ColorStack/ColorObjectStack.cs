@@ -111,7 +111,8 @@ namespace Game.ColorStack
             var jumpDuration = duration + allDelay;
             _canInteractTime = jumpDuration + Time.time;
 
-            var tween = DOVirtual.DelayedCall(jumpDuration, () => CheckWinState());
+            var tween = DOVirtual.DelayedCall(jumpDuration, () => CheckWinState())
+                .SetLink(gameObject);
             _tweens.Add(tween);
         }
 
@@ -135,7 +136,7 @@ namespace Game.ColorStack
             ColorObject temp = null;
 
             var tempList = new List<ColorObject>();
-            var moveGroup = Instantiate(_moveGroupPrefab, targetPosition, Quaternion.identity);
+            var moveGroup = Instantiate(_moveGroupPrefab, targetPosition, Quaternion.identity, _pathMover.transform);
             float allDelay = 0f;
 
             do
@@ -165,9 +166,37 @@ namespace Game.ColorStack
 
                     moveGroup.Setup(tempList, _pathMover);
                     _pathMover.AddObject(moveGroup);
-                });
+                }).SetLink(gameObject);
 
             _tweens.Add(tween);
+        }
+
+        public void KillPendingTweens()
+        {
+            foreach (var tween in _tweens)
+            {
+                if (tween != null && tween.IsActive())
+                {
+                    tween.Kill();
+                }
+            }
+
+            _tweens.Clear();
+
+            foreach (var colorObject in _colorObjects)
+            {
+                colorObject?.StopJump();
+            }
+
+            if (_startObjectPosition == null)
+            {
+                return;
+            }
+
+            foreach (var colorObject in _startObjectPosition.GetComponentsInChildren<ColorObject>(true))
+            {
+                colorObject.StopJump();
+            }
         }
 
         private void OnDrawGizmos()
@@ -236,15 +265,7 @@ namespace Game.ColorStack
         
         private void OnDestroy()
         {
-            foreach (var tween in _tweens)
-            {
-                if (tween != null && tween.IsActive())
-                {
-                    tween.Kill();
-                }
-            }
-
-            _tweens.Clear();
+            KillPendingTweens();
         }
     }
 }

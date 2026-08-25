@@ -10,7 +10,11 @@ namespace UI.WindowsLogic.GameWindow
         [SerializeField] private TMP_Text _level;
         [SerializeField] private Button _pauseButton;
         [SerializeField] private Button _restartButton;
-
+        public void SetLevel(int level)
+        {
+            _level.text = $"LVL {level}";
+        }
+        
         public void SubscribeButton(UnityAction onPauseButtonClick, UnityAction onRestartButtonClick)
         {
             _pauseButton.onClick.AddListener(onPauseButtonClick);

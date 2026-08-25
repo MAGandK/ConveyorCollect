@@ -50,8 +50,26 @@ namespace Game.Path
             return _pathCreation.path.GetClosestPointOnPath(transformPosition);
         }
         
+        public void StopJumps()
+        {
+            foreach (var group in _groups)
+            {
+                if (group == null || group.ColorObjects == null)
+                {
+                    continue;
+                }
+
+                foreach (var colorObject in group.ColorObjects)
+                {
+                    colorObject?.StopJump();
+                }
+            }
+        }
+
         public void Reset()
         {
+            StopJumps();
+
             foreach (var group in _groups)
             {
                 if (group != null)

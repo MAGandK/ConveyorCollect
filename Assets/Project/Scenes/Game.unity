@@ -400,7 +400,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25240f672496486ab63eab776418957a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _initialTime: 30
+  _initialTime: 15
   _timerView: {fileID: 770495047819179450}
   _gameManager: {fileID: 1782589864}
 --- !u!4 &1771475405
@@ -498,6 +498,7 @@ MonoBehaviour:
   - {fileID: 6369844822927669131, guid: 53e489ef8279349029a44c7c87490d66, type: 3}
   - {fileID: 6369844822927669131, guid: e7f388aeca34d442ab02de006b9d434a, type: 3}
   _spawnPoint: {fileID: 1285658055}
+  _currentIndex: 0
 --- !u!4 &2056093514
 Transform:
   m_ObjectHideFlags: 0

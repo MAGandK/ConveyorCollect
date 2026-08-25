@@ -92,15 +92,16 @@ namespace Game.Managers
 
         private void WinPopupOnWon()
         {
-            Time.timeScale = 1f;
             _isLevelWon = false;
-
             _levelManager.LoadNextLevel();
+            Time.timeScale = 1f;
 
             _timerController.ResetTimer();
             _timerController.StartTimer();
 
             _uiController.ShowWindow<GameWindowController>();
+
+            _gameWindow.SetLevel(_levelManager.CurrentLevel);
 
             GameRestarted?.Invoke();
         }
@@ -110,6 +111,8 @@ namespace Game.Managers
             Time.timeScale = 1f;
 
             _uiController.ShowWindow<GameWindowController>();
+
+            _gameWindow.SetLevel(_levelManager.CurrentLevel);
 
             GameStarted?.Invoke();
         }
@@ -123,15 +126,16 @@ namespace Game.Managers
 
         private void RestartGame()
         {
-            Time.timeScale = 1f;
             _isLevelWon = false;
-
             _levelManager.RestartCurrentLevel();
+            Time.timeScale = 1f;
 
             _timerController.ResetTimer();
             _timerController.StartTimer();
 
             _uiController.ShowWindow<GameWindowController>();
+
+            _gameWindow.SetLevel(_levelManager.CurrentLevel);
 
             GameRestarted?.Invoke();
         }
@@ -144,6 +148,7 @@ namespace Game.Managers
             }
 
             _timerController.PauseTimer();
+            _levelManager.StopActiveTweens();
 
             _uiController.ShowWindow<FailPopupController>();
 
@@ -154,8 +159,8 @@ namespace Game.Managers
         {
             RestartGame();
         }
-        
-        public void PauseGame()
+
+        private void PauseGame()
         {
             if (_isLevelWon)
             {

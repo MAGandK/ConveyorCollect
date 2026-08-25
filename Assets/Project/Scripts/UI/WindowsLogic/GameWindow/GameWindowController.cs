@@ -22,6 +22,11 @@ namespace UI.WindowsLogic.GameWindow
                 OnRestartButtonClick
             );
         }
+        
+        public void SetLevel(int level)
+        {
+            _gameWindowView.SetLevel(level);
+        }
 
         private void OnPauseButtonClick()
         {

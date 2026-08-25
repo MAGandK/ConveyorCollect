@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Game.ColorObjects;
+using Game.ColorStack;
 using Game.Path;
 using UnityEngine;
 
@@ -9,7 +11,8 @@ namespace Level
         [SerializeField] private List<GameObject> _levelPrefabs;
         [SerializeField] private Transform _spawnPoint;
         private GameObject _currentLevel;
-        private int _currentIndex;
+        public int _currentIndex;
+        public int CurrentLevel => _currentIndex + 1;
 
         private void Start()
         {
@@ -21,12 +24,30 @@ namespace Level
             _currentLevel = Instantiate(_levelPrefabs[index], _spawnPoint.position, Quaternion.identity);
         }
 
+        public void StopActiveTweens()
+        {
+            if (_currentLevel == null)
+            {
+                return;
+            }
+
+            foreach (var colorObject in _currentLevel.GetComponentsInChildren<ColorObject>(true))
+            {
+                colorObject.StopJump();
+            }
+
+            foreach (var stack in _currentLevel.GetComponentsInChildren<ColorObjectStack>(true))
+            {
+                stack.KillPendingTweens();
+            }
+
+            var pathMover = _currentLevel.GetComponentInChildren<PathMover>(true);
+            pathMover?.StopJumps();
+        }
+
         public void LoadNextLevel()
         {
-            if (_currentLevel != null)
-            {
-                Destroy(_currentLevel);
-            }
+            DestroyCurrentLevel();
 
             _currentIndex++;
             if (_currentIndex >= _levelPrefabs.Count)
@@ -49,6 +70,8 @@ namespace Level
             {
                 return;
             }
+
+            StopActiveTweens();
 
             var pathMover = _currentLevel.GetComponentInChildren<PathMover>();
 
