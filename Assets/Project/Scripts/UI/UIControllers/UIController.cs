@@ -36,25 +36,34 @@ namespace UI.UIControllers
         {
             var window = _controllers.FirstOrDefault(x => x is T);
 
-            if (window == null || (_openedWindows.Count > 0 && window == _openedWindows[^1]))
+            if (window == null)
             {
                 return;
             }
 
-            if (window is not IPopController popController)
+            if (window is IPopController popController)
             {
-                foreach (var windowController in _openedWindows)
+                if (_openedWindows.Contains(window))
                 {
-                    windowController.Hide();
+                    _openedWindows.Remove(window);
+                }
+                else
+                {
+                    popController.SetOrderInLayer(++_orderIndex);
                 }
 
-                _orderIndex = 0;
-            }
-            else
-            {
-                popController.SetOrderInLayer(++_orderIndex);
+                _openedWindows.Add(window);
+                window.Show();
+                return;
             }
 
+            foreach (var openedWindow in _openedWindows)
+            {
+                openedWindow.Hide();
+            }
+
+            _openedWindows.Clear();
+            _orderIndex = 0;
             _openedWindows.Add(window);
             window.Show();
         }
@@ -66,6 +75,11 @@ namespace UI.UIControllers
 
         public void CloseLastOpenPopup()
         {
+            if (_openedWindows.Count == 0)
+            {
+                return;
+            }
+
             var windowController = _openedWindows[^1];
 
             if (windowController is not IPopController)
@@ -75,7 +89,11 @@ namespace UI.UIControllers
 
             windowController.Hide();
             _openedWindows.Remove(windowController);
-            _orderIndex--;
+
+            if (_orderIndex > 0)
+            {
+                _orderIndex--;
+            }
         }
     }
 }

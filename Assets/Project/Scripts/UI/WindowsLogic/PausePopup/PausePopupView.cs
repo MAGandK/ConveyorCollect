@@ -9,7 +9,7 @@ namespace UI.WindowsLogic.PausePopup
         [SerializeField] private Button _backButton;
         [SerializeField] private Button _restartButton;
         public Button BackButton => _backButton;
-        public Button RestartButton => _backButton;
+        public Button RestartButton => _restartButton;
 
         public void SubscribeButton(UnityAction onCloseButtonClick, UnityAction onRestartButtonClick)
         {

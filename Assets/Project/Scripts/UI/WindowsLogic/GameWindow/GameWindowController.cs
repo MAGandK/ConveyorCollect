@@ -1,10 +1,14 @@
+using System;
 using UI.WindowsLogic.PausePopup;
 
 namespace UI.WindowsLogic.GameWindow
 {
     public class GameWindowController : AbstractWindowController<GameWindowView>
-    {
-        private GameWindowView _gameWindowView;
+    { 
+        public event Action PauseClicked;
+        public event Action RestartClicked;
+
+        private readonly GameWindowView _gameWindowView;
 
         public GameWindowController(GameWindowView view) : base(view)
         {
@@ -13,17 +17,21 @@ namespace UI.WindowsLogic.GameWindow
 
         public override void Initialize()
         {
-            _gameWindowView.SubscribeButton(OnPauseButtonClick, OnRestartButtonClick);
+            _gameWindowView.SubscribeButton(
+                OnPauseButtonClick,
+                OnRestartButtonClick
+            );
         }
 
         private void OnPauseButtonClick()
         {
             _uiController.ShowWindow<PausePopupController>();
+            PauseClicked?.Invoke();
         }
 
         private void OnRestartButtonClick()
         {
-            _uiController.ShowWindow<GameWindowController>();
+            RestartClicked?.Invoke();
         }
     }
 }

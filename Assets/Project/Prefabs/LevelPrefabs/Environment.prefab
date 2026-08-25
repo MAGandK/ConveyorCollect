@@ -202,6 +202,7 @@ MonoBehaviour:
   - {fileID: 8693026186445812659}
   - {fileID: 1153047400998242075}
   - {fileID: 251804592433957625}
+  _gameManager: {fileID: 0}
 --- !u!1001 &520722682278724488
 PrefabInstance:
   m_ObjectHideFlags: 0

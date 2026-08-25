@@ -1,6 +1,5 @@
 using System;
 using Game.Managers;
-using UI.WindowsLogic.GameWindow;
 
 namespace UI.WindowsLogic.PausePopup
 {
@@ -38,7 +37,7 @@ namespace UI.WindowsLogic.PausePopup
 
         private void OnRestartButtonClick()
         {
-            _uiController.ShowWindow<GameWindowController>();
+            PauseManager.Instance.SetPause(false);
             _uiController.CloseLastOpenPopup();
             Restarted?.Invoke();
         }

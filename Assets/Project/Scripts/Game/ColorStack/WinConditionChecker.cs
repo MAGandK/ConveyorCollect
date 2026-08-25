@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using Game.Managers;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace Game.ColorStack
         [SerializeField] private GameManager _gameManager;
 
         private bool _hasWon;
+        private Coroutine _winRoutine;
 
         private void Awake()
         {
@@ -61,6 +63,12 @@ namespace Game.ColorStack
         {
             _hasWon = false;
 
+            if (_winRoutine != null)
+            {
+                StopCoroutine(_winRoutine);
+                _winRoutine = null;
+            }
+
             foreach (var colorObjectStack in _colorObjectStacks)
             {
                 colorObjectStack?.ResetWinProgress();
@@ -69,16 +77,42 @@ namespace Game.ColorStack
 
         private void ColorObjectStackOnFilledStack(ColorObjectStack _)
         {
-            if (_hasWon || _gameManager == null || _colorObjectStacks.Length == 0)
+            if (_hasWon || _winRoutine != null || _gameManager == null || _colorObjectStacks.Length == 0)
             {
                 return;
             }
 
-            if (_colorObjectStacks.All(x => x.WasFilledThisSession && x.IsWinningStack()))
+            if (!_colorObjectStacks.All(x => x.WasFilledThisSession && x.IsWinningStack()))
             {
-                _hasWon = true;
-                _gameManager.OnLevelWon();
+                return;
             }
+
+            _winRoutine = StartCoroutine(CompleteWinAfterJumps());
+        }
+
+        private IEnumerator CompleteWinAfterJumps()
+        {
+            yield return new WaitUntil(AreAllJumpsFinished);
+
+            _winRoutine = null;
+
+            if (_hasWon || _gameManager == null)
+            {
+                yield break;
+            }
+
+            if (!_colorObjectStacks.All(x => x.WasFilledThisSession && x.IsWinningStack()))
+            {
+                yield break;
+            }
+
+            _hasWon = true;
+            _gameManager.OnLevelWon();
+        }
+
+        private bool AreAllJumpsFinished()
+        {
+            return _colorObjectStacks.All(stack => stack != null && !stack.HasJumpingObjects);
         }
     }
 }

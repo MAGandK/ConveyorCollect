@@ -22,14 +22,16 @@ namespace UI.WindowsLogic.Window.StartWindow
         public void OnPointerDown(PointerEventData eventData)
         {
             KillCurrentAnimation();
-            _tweenerCore = transform.DOScale(_transformLocalScale * _scaleValue, _duration);
+            _tweenerCore = transform.DOScale(_transformLocalScale * _scaleValue, _duration)
+                .SetUpdate(true);
             _tweenerCore.Play();
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
             KillCurrentAnimation();
-            _tweenerCore = transform.DOScale(_transformLocalScale, _duration);
+            _tweenerCore = transform.DOScale(_transformLocalScale, _duration)
+                .SetUpdate(true);
             _tweenerCore.Play();
         }
 
@@ -41,7 +43,7 @@ namespace UI.WindowsLogic.Window.StartWindow
 
         private void KillCurrentAnimation()
         {
-            _tweenerCore.Kill();
+            _tweenerCore?.Kill();
             _tweenerCore = null;
         }
     }

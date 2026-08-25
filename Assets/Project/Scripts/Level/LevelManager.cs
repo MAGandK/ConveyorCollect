@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using Game.Path;
 using UnityEngine;
 
 namespace Level
@@ -8,7 +8,6 @@ namespace Level
     {
         [SerializeField] private List<GameObject> _levelPrefabs;
         [SerializeField] private Transform _spawnPoint;
-
         private GameObject _currentLevel;
         private int _currentIndex;
 
@@ -36,6 +35,30 @@ namespace Level
             }
             
             LoadLevel(_currentIndex);
+        }
+        
+        public void RestartCurrentLevel()
+        {
+            DestroyCurrentLevel();
+            LoadLevel(_currentIndex);
+        }
+        
+        private void DestroyCurrentLevel()
+        {
+            if (_currentLevel == null)
+            {
+                return;
+            }
+
+            var pathMover = _currentLevel.GetComponentInChildren<PathMover>();
+
+            if (pathMover != null)
+            {
+                pathMover.Reset();
+            }
+
+            Destroy(_currentLevel);
+            _currentLevel = null;
         }
     }
 }

@@ -49,5 +49,18 @@ namespace Game.Path
         {
             return _pathCreation.path.GetClosestPointOnPath(transformPosition);
         }
+        
+        public void Reset()
+        {
+            foreach (var group in _groups)
+            {
+                if (group != null)
+                {
+                    Destroy(group.gameObject);
+                }
+            }
+
+            _groups.Clear();
+        }
     }
 }

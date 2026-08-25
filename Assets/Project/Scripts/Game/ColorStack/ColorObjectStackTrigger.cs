@@ -9,11 +9,23 @@ namespace Game.ColorStack
     {
         [SerializeField] private ColorObjectStack _objectStack;
         [SerializeField] private PathMover _pathMover;
-        private MoveGroup _moveGroup;
+
+        private void Awake()
+        {
+            if (_objectStack == null)
+            {
+                _objectStack = GetComponentInParent<ColorObjectStack>();
+            }
+
+            if (_pathMover == null)
+            {
+                _pathMover = transform.root.GetComponentInChildren<PathMover>(true);
+            }
+        }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (_objectStack.IsFull)
+            if (_objectStack == null || _objectStack.IsFull)
             {
                 return;
             }
@@ -23,14 +35,17 @@ namespace Game.ColorStack
                 return;
             }
 
-            if (moveGroupPhysics.MoveGroup.ColorObjects.Count > 0)
+            var colorObjects = moveGroupPhysics.MoveGroup.ColorObjects;
+            if (colorObjects == null || colorObjects.Count == 0)
             {
-                _objectStack.Push(moveGroupPhysics.MoveGroup.ColorObjects);
+                return;
+            }
 
-                if (moveGroupPhysics.MoveGroup.ColorObjects.IsEmpty())
-                {
-                    _pathMover.Remove(moveGroupPhysics.MoveGroup);
-                }
+            _objectStack.Push(colorObjects);
+
+            if (_pathMover != null && colorObjects.IsEmpty())
+            {
+                _pathMover.Remove(moveGroupPhysics.MoveGroup);
             }
         }
     }

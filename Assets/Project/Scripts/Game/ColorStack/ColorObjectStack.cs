@@ -13,7 +13,7 @@ namespace Game.ColorStack
     public class ColorObjectStack : MonoBehaviour
     {
         public event Action<ColorObjectStack> FilledStack;
-
+        private readonly List<Tween> _tweens = new();
         [SerializeField] private int _capacity;
         [SerializeField] private Transform _startObjectPosition;
         [SerializeField] private float _distanceBetween;
@@ -36,6 +36,22 @@ namespace Game.ColorStack
         public bool IsFull => _colorObjects.Count >= _capacity;
         public bool WasFilledThisSession => _wasFilledThisSession;
 
+        public bool HasJumpingObjects
+        {
+            get
+            {
+                foreach (var colorObject in _colorObjects)
+                {
+                    if (colorObject != null && colorObject.IsJumping)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }
+
         public void ResetWinProgress()
         {
             _wasFilledThisSession = false;
@@ -43,6 +59,11 @@ namespace Game.ColorStack
 
         private void Awake()
         {
+            if (_pathMover == null)
+            {
+                _pathMover = transform.root.GetComponentInChildren<PathMover>(true);
+            }
+
             _initMaterialStackPlatform = _rendererStackPlatform.material;
 
             foreach (var startObject in _startObjects)
@@ -90,7 +111,8 @@ namespace Game.ColorStack
             var jumpDuration = duration + allDelay;
             _canInteractTime = jumpDuration + Time.time;
 
-            CheckWinState();
+            var tween = DOVirtual.DelayedCall(jumpDuration, () => CheckWinState());
+            _tweens.Add(tween);
         }
 
         private void SetPlatformColor(ColorType colorType)
@@ -104,7 +126,7 @@ namespace Game.ColorStack
 
         public void Pop()
         {
-            if (_colorObjects.Count == 0)
+            if (_colorObjects.Count == 0 || _pathMover == null || _moveGroupPrefab == null)
             {
                 return;
             }
@@ -114,7 +136,6 @@ namespace Game.ColorStack
 
             var tempList = new List<ColorObject>();
             var moveGroup = Instantiate(_moveGroupPrefab, targetPosition, Quaternion.identity);
-
             float allDelay = 0f;
 
             do
@@ -133,12 +154,20 @@ namespace Game.ColorStack
 
             _canInteractTime = Time.time + allJumpDuration ;
 
-            DOVirtual.DelayedCall(allJumpDuration,
+            var tween = DOVirtual.DelayedCall(
+                allJumpDuration,
                 () =>
                 {
+                    if (moveGroup == null)
+                    {
+                        return;
+                    }
+
                     moveGroup.Setup(tempList, _pathMover);
                     _pathMover.AddObject(moveGroup);
                 });
+
+            _tweens.Add(tween);
         }
 
         private void OnDrawGizmos()
@@ -203,6 +232,19 @@ namespace Game.ColorStack
             Debug.Log($"собрали цвет {_colorObjects.Peek().Color}");
 
             return true;
+        }
+        
+        private void OnDestroy()
+        {
+            foreach (var tween in _tweens)
+            {
+                if (tween != null && tween.IsActive())
+                {
+                    tween.Kill();
+                }
+            }
+
+            _tweens.Clear();
         }
     }
 }
